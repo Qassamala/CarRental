@@ -12,6 +12,6 @@ namespace CarRental.Models.ViewModels
         public string CarType { get; set; }
         public string CarLicenseNumber { get; set; }
         public DateTime TimeOfPickUp { get; set; }
-        public int CurrentOdometer { get; set; }
+        public int CurrentMileage { get; set; }
     }
 }
