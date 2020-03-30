@@ -33,15 +33,25 @@ namespace CarRental.Controllers
 
         [HttpPost]
         [Route("/Register")]
-        public IActionResult Register(RegisterBookingVM registerBooking)
+        public async Task<IActionResult> Register(RegisterBookingVM registerBooking)
         {
             if (!ModelState.IsValid)
                 return View(registerBooking);
 
-            var result = service.TryRegisterBookingAsync(registerBooking);
+            await service.TryRegisterBookingAsync(registerBooking);
 
             return RedirectToAction(nameof(Register));
         }
+
+        [HttpGet]
+        [Route("/Bookings")]
+        public IActionResult GetBookings()
+        {
+            var bookings = service.GetBookings();
+
+            return View(bookings);
+        }
+
 
         [HttpGet]
         [Route("/Return")]
@@ -52,12 +62,12 @@ namespace CarRental.Controllers
 
         [HttpPost]
         [Route("/Return")]
-        public IActionResult Return(RegisterReturnVM registerReturn)
+        public async Task<IActionResult> Return(RegisterReturnVM registerReturn)
         {
-            //if (!ModelState.IsValid)
-            //    return View(registerReturn);
+            if (!ModelState.IsValid)
+                return View(registerReturn);
 
-            //var result = service.TryRegisterBookingAsync(registerReturn);
+            await service.TryRegisterReturnAsync(registerReturn);
 
             return RedirectToAction(nameof(GetCost));
         }

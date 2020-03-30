@@ -4,19 +4,13 @@
     ViewData["Title"] = "Register";
 }
 
-<h1>Register</h1>
+<h1>Register Booking</h1>
 
-<h4>RegisterBookingVM</h4>
 <hr />
 <div class="row">
     <div class="col-md-4">
         <form asp-action="Register">
             <div asp-validation-summary="ModelOnly" class="text-danger"></div>
-            @*<div class="form-group">
-                <label asp-for="BookingNumber" class="control-label"></label>
-                <input asp-for="BookingNumber" class="form-control" />
-                <span asp-validation-for="BookingNumber" class="text-danger"></span>
-            </div>*@
             <div class="form-group">
                 <label asp-for="ClientSSN" class="control-label"></label>
                 <input asp-for="ClientSSN" class="form-control" />
@@ -50,6 +44,6 @@
 </div>
 
 <div>
-    <a asp-action="Index">Back to List</a>
+    <a asp-action="GetBookings">Back to all bookings</a>
 </div>
 

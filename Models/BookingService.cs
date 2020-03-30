@@ -45,24 +45,35 @@ namespace CarRental.Models
 
 
 
-        public RegisterBookingVM GetBooking(int bookingNumber)
+        public RegisterBookingVM[] GetBookings()
         {
 
-            var bookings = context.Booking.ToList();
+            return context.Booking
+                .Select(b => new RegisterBookingVM
+                {
+                    BookingNumber = b.BookingNumber,
+                    ClientSSN = b.ClientSsn,
+                    CarType = b.CarType,
+                    CarLicenseNumber = b.CarLicenseNumber,
+                    TimeOfBooking = (DateTime)b.TimeOfBooking,
+                    CurrentMileage = (int)b.CurrentMileage
+                }).ToArray();
 
-            var booking = bookings.Where(b => b.BookingNumber == bookingNumber).FirstOrDefault();
+            //var bookings = context.Booking.ToList();
 
-            RegisterBookingVM bookingViewModel = new RegisterBookingVM
-            {
-                BookingNumber = booking.BookingNumber,
-                ClientSSN = booking.ClientSsn,
-                CarType = booking.CarType,
-                CarLicenseNumber = booking.CarLicenseNumber,
-                TimeOfBooking = (DateTime)booking.TimeOfBooking,
-                CurrentMileage = (int)booking.CurrentMileage
-            };
+            //var booking = bookings.Where(b => b.BookingNumber == bookingNumber).FirstOrDefault();
 
-            return bookingViewModel;
+            //RegisterBookingVM bookingViewModel = new RegisterBookingVM
+            //{
+            //    BookingNumber = booking.BookingNumber,
+            //    ClientSSN = booking.ClientSsn,
+            //    CarType = booking.CarType,
+            //    CarLicenseNumber = booking.CarLicenseNumber,
+            //    TimeOfBooking = (DateTime)booking.TimeOfBooking,
+            //    CurrentMileage = (int)booking.CurrentMileage
+            //};
+
+            //return bookingViewModel;
         }
     }
 }

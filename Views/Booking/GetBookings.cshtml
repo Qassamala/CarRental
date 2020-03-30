@@ -1,0 +1,66 @@
+﻿@model CarRental.Models.ViewModels.RegisterBookingVM[]
+
+@{
+    ViewData["Title"] = "List of Bookings";
+}
+
+<h1>ShowBookings</h1>
+
+<p>
+    <a asp-action="Register">Register booking</a>
+</p>
+<table class="table">
+    <thead>
+        @foreach (var item in Model)
+        {
+            <tr>
+                <th>
+                    @Html.DisplayNameFor(model => item.BookingNumber)
+                </th>
+                <th>
+                    @Html.DisplayNameFor(model => item.ClientSSN)
+                </th>
+                <th>
+                    @Html.DisplayNameFor(model => item.CarType)
+                </th>
+                <th>
+                    @Html.DisplayNameFor(model => item.CarLicenseNumber)
+                </th>
+                <th>
+                    @Html.DisplayNameFor(model => item.TimeOfBooking)
+                </th>
+                <th>
+                    @Html.DisplayNameFor(model => item.CurrentMileage)
+                </th>
+                <th></th>
+            </tr>
+        }
+        </thead>
+    <tbody>
+@foreach (var item in Model) {
+        <tr>
+            <td>
+                @Html.DisplayFor(modelItem => item.BookingNumber)
+            </td>
+            <td>
+                @Html.DisplayFor(modelItem => item.ClientSSN)
+            </td>
+            <td>
+                @Html.DisplayFor(modelItem => item.CarType)
+            </td>
+            <td>
+                @Html.DisplayFor(modelItem => item.CarLicenseNumber)
+            </td>
+            <td>
+                @Html.DisplayFor(modelItem => item.TimeOfBooking)
+            </td>
+            <td>
+                @Html.DisplayFor(modelItem => item.CurrentMileage)
+            </td>
+            <td>
+                @Html.ActionLink("Return", "Return", new { /* id=item.PrimaryKey */ })
+            </td>
+        </tr>
+}
+    </tbody>
+</table>
