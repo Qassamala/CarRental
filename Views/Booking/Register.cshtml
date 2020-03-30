@@ -1,0 +1,55 @@
+﻿@model CarRental.Models.ViewModels.RegisterBookingVM
+
+@{
+    ViewData["Title"] = "Register";
+}
+
+<h1>Register</h1>
+
+<h4>RegisterBookingVM</h4>
+<hr />
+<div class="row">
+    <div class="col-md-4">
+        <form asp-action="Register">
+            <div asp-validation-summary="ModelOnly" class="text-danger"></div>
+            @*<div class="form-group">
+                <label asp-for="BookingNumber" class="control-label"></label>
+                <input asp-for="BookingNumber" class="form-control" />
+                <span asp-validation-for="BookingNumber" class="text-danger"></span>
+            </div>*@
+            <div class="form-group">
+                <label asp-for="ClientSSN" class="control-label"></label>
+                <input asp-for="ClientSSN" class="form-control" />
+                <span asp-validation-for="ClientSSN" class="text-danger"></span>
+            </div>
+            <div class="form-group">
+                <label asp-for="CarType" class="control-label"></label>
+                <input asp-for="CarType" class="form-control" />
+                <span asp-validation-for="CarType" class="text-danger"></span>
+            </div>
+            <div class="form-group">
+                <label asp-for="CarLicenseNumber" class="control-label"></label>
+                <input asp-for="CarLicenseNumber" class="form-control" />
+                <span asp-validation-for="CarLicenseNumber" class="text-danger"></span>
+            </div>
+            <div class="form-group">
+                <label asp-for="TimeOfBooking" class="control-label"></label>
+                <input asp-for="TimeOfBooking" class="form-control" />
+                <span asp-validation-for="TimeOfBooking" class="text-danger"></span>
+            </div>
+            <div class="form-group">
+                <label asp-for="CurrentMileage" class="control-label"></label>
+                <input asp-for="CurrentMileage" class="form-control" />
+                <span asp-validation-for="CurrentMileage" class="text-danger"></span>
+            </div>
+            <div class="form-group">
+                <input type="submit" value="Create" class="btn btn-primary" />
+            </div>
+        </form>
+    </div>
+</div>
+
+<div>
+    <a asp-action="Index">Back to List</a>
+</div>
+

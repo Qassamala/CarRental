@@ -2,6 +2,7 @@ using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Threading.Tasks;
+using CarRental.Models;
 using CarRental.Models.Entities;
 using Microsoft.AspNetCore.Builder;
 using Microsoft.AspNetCore.Hosting;
@@ -28,6 +29,9 @@ namespace CarRental
             var connectionString = configuration.GetConnectionString("DefaultConnection");
             services.AddDbContext<CarRentalContext>(options => options.UseSqlServer(connectionString));
             services.AddControllersWithViews();
+
+            services.AddTransient<BookingService>();
+
         }
 
         // This method gets called by the runtime. Use this method to configure the HTTP request pipeline.
