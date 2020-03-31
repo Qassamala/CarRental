@@ -3,6 +3,7 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Threading.Tasks;
 using CarRental.Models;
+using CarRental.Models.Entities;
 using CarRental.Models.ViewModels;
 using Microsoft.AspNetCore.Mvc;
 
@@ -54,14 +55,14 @@ namespace CarRental.Controllers
 
 
         [HttpGet]
-        [Route("/Return")]
-        public IActionResult Return()
+        [Route("/Return/{id}")]
+        public IActionResult Return(int id)
         {
-            return View();
+            return View(new RegisterReturnVM {BookingNumber = id });
         }
 
         [HttpPost]
-        [Route("/Return")]
+        [Route("/Return/{id}")]
         public async Task<IActionResult> Return(RegisterReturnVM registerReturn)
         {
             if (!ModelState.IsValid)
@@ -69,14 +70,19 @@ namespace CarRental.Controllers
 
             await service.TryRegisterReturnAsync(registerReturn);
 
-            return RedirectToAction(nameof(GetCost));
+            return RedirectToAction(nameof(GetCost), new { id = registerReturn.BookingNumber });
         }
 
         [HttpGet]
-        [Route("/GetCost")]
-        public IActionResult GetCost()
+        [Route("/GetCost/{id}")]
+        public IActionResult GetCost(int id)
         {
+            decimal cost = service.TryGetCost(id);
+
+            ViewBag.Message = $"Total cost of rental is {cost} SEK";
+
             return View();
         }
+
     }
 }

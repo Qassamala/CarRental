@@ -4,7 +4,7 @@
     ViewData["Title"] = "List of Bookings";
 }
 
-<h1>ShowBookings</h1>
+<h1>List of Bookings</h1>
 
 <p>
     <a asp-action="Register">Register booking</a>
@@ -58,6 +58,7 @@
                 @Html.DisplayFor(modelItem => item.CurrentMileage)
             </td>
             <td>
+                <a asp-controller="Booking" asp-action="Return" asp-route-id="@item.BookingNumber">Return asp</a>
                 @Html.ActionLink("Return", "Return", new { /* id=item.PrimaryKey */ })
             </td>
         </tr>

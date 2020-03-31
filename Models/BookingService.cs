@@ -43,6 +43,85 @@ namespace CarRental.Models
             await context.SaveChangesAsync();
         }
 
+        internal decimal TryGetCost(int id)
+        {
+            var booking = GetBookingById(id);
+
+            var returnOfRental = GetReturnOfRentalCarById(id);
+
+            decimal baseDayRental = 200;
+
+            decimal kmPrice = 3;
+
+            int numberOfDays = (returnOfRental.TimeOfReturn - booking.TimeOfBooking).Days;
+
+            var numberOfKilometers = returnOfRental.DistanceCovered;
+
+            decimal finalPrice = 0;
+
+            switch (booking.CarType)
+            {
+                case "Small car":
+                    finalPrice = baseDayRental * (1 + numberOfDays);
+                    break;
+
+                case "Van":
+                    finalPrice = baseDayRental * (1 + numberOfDays) * (decimal)1.2 + kmPrice * numberOfKilometers;
+                    break;
+
+                case "Minibus":
+                    finalPrice = baseDayRental * (1 + numberOfDays) * (decimal)1.7 + kmPrice * numberOfKilometers;
+                    break;
+
+                default:
+                    break;
+            }
+
+            return finalPrice;
+
+        }
+
+        public Booking GetBookingById(int id)
+        {
+            return context.Booking.Where(b => b.BookingNumber == id).FirstOrDefault();
+
+            //var booking = bookings.Where(b => b.BookingNumber == bookingNumber).FirstOrDefault();
+
+            //RegisterBookingVM bookingViewModel = new RegisterBookingVM
+            //{
+            //    BookingNumber = booking.BookingNumber,
+            //    ClientSSN = booking.ClientSsn,
+            //    CarType = booking.CarType,
+            //    CarLicenseNumber = booking.CarLicenseNumber,
+            //    TimeOfBooking = (DateTime)booking.TimeOfBooking,
+            //    CurrentMileage = (int)booking.CurrentMileage
+            //};
+
+            //return bookingViewModel;
+        }
+
+        public ReturnOfRentalCar GetReturnOfRentalCarById(int id)
+        {
+
+            return context.ReturnOfRentalCar.Where(b => b.BookingNumber == id).FirstOrDefault();
+
+            //var bookings = context.Booking.ToList();
+
+            //var booking = bookings.Where(b => b.BookingNumber == bookingNumber).FirstOrDefault();
+
+            //RegisterBookingVM bookingViewModel = new RegisterBookingVM
+            //{
+            //    BookingNumber = booking.BookingNumber,
+            //    ClientSSN = booking.ClientSsn,
+            //    CarType = booking.CarType,
+            //    CarLicenseNumber = booking.CarLicenseNumber,
+            //    TimeOfBooking = (DateTime)booking.TimeOfBooking,
+            //    CurrentMileage = (int)booking.CurrentMileage
+            //};
+
+            //return bookingViewModel;
+        }
+
 
 
         public RegisterBookingVM[] GetBookings()
