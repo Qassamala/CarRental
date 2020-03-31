@@ -41,12 +41,12 @@ namespace CarRental.Models.Entities
                     .HasMaxLength(32)
                     .IsUnicode(false);
 
-                entity.Property(e => e.TimeOfBooking).HasColumnType("date");
+                entity.Property(e => e.TimeOfBooking).HasColumnType("datetime");
             });
 
             modelBuilder.Entity<ReturnOfRentalCar>(entity =>
             {
-                entity.Property(e => e.TimeOfReturn).HasColumnType("date");
+                entity.Property(e => e.TimeOfReturn).HasColumnType("datetime");
 
                 entity.HasOne(d => d.BookingNumberNavigation)
                     .WithMany(p => p.ReturnOfRentalCar)

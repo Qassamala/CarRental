@@ -14,7 +14,7 @@ namespace CarRental.Models.Entities
         public string ClientSsn { get; set; }
         public string CarType { get; set; }
         public string CarLicenseNumber { get; set; }
-        public DateTime TimeOfBooking { get; set; }
+        public DateTime? TimeOfBooking { get; set; }
         public int CurrentMileage { get; set; }
 
         public virtual ICollection<ReturnOfRentalCar> ReturnOfRentalCar { get; set; }

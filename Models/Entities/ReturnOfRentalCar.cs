@@ -8,7 +8,7 @@ namespace CarRental.Models.Entities
         public int Id { get; set; }
         public int BookingNumber { get; set; }
         public int DistanceCovered { get; set; }
-        public DateTime TimeOfReturn { get; set; }
+        public DateTime? TimeOfReturn { get; set; }
 
         public virtual Booking BookingNumberNavigation { get; set; }
     }

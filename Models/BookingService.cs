@@ -53,7 +53,7 @@ namespace CarRental.Models
 
             decimal kmPrice = 3;
 
-            int numberOfDays = (returnOfRental.TimeOfReturn - booking.TimeOfBooking).Days;
+            var numberOfDays = (TimeSpan)(returnOfRental.TimeOfReturn - booking.TimeOfBooking);
 
             var numberOfKilometers = returnOfRental.DistanceCovered;
 
@@ -62,15 +62,15 @@ namespace CarRental.Models
             switch (booking.CarType)
             {
                 case "Small car":
-                    finalPrice = baseDayRental * (1 + numberOfDays);
+                    finalPrice = baseDayRental * (1 + numberOfDays.Days);
                     break;
 
                 case "Van":
-                    finalPrice = baseDayRental * (1 + numberOfDays) * (decimal)1.2 + kmPrice * numberOfKilometers;
+                    finalPrice = baseDayRental * (1 + numberOfDays.Days) * (decimal)1.2 + kmPrice * numberOfKilometers;
                     break;
 
                 case "Minibus":
-                    finalPrice = baseDayRental * (1 + numberOfDays) * (decimal)1.7 + kmPrice * numberOfKilometers;
+                    finalPrice = baseDayRental * (1 + numberOfDays.Days) * (decimal)1.7 + kmPrice * numberOfKilometers;
                     break;
 
                 default:
