@@ -34,9 +34,16 @@ namespace CarRental.Models
             await SetIsNotAvailable(viewModel.CarLicenseNumber);
         }
 
-        public async Task SetIsNotAvailable(string carLicenseNumber)
+        public AvailableCars GetCar(string carLicenseNumber)
         {
             var car = context.AvailableCars.Where(c => c.CarLicenseNumber == carLicenseNumber).FirstOrDefault();
+
+            return car;
+        }
+
+        public async Task SetIsNotAvailable(string carLicenseNumber)
+        {
+            var car = GetCar(carLicenseNumber);
 
             car.IsAvailable = false;
 
@@ -47,7 +54,7 @@ namespace CarRental.Models
 
         public async Task SetIsAvailable(string carLicenseNumber)
         {
-            var car = context.AvailableCars.Where(c => c.CarLicenseNumber == carLicenseNumber).FirstOrDefault();
+            var car = GetCar(carLicenseNumber);
 
             car.IsAvailable = true;
 
@@ -64,7 +71,7 @@ namespace CarRental.Models
                 TimeOfReturn = viewModel.TimeOfReturn,
                 DistanceCovered = viewModel.DistanceCovered
             });
-            await context.SaveChangesAsync();
+            await context.SaveChangesAsync();            
 
             var booking = GetBookingById(viewModel.BookingNumber);
 
@@ -72,11 +79,17 @@ namespace CarRental.Models
 
             context.Booking.Update(booking);
 
+            var car = GetCar(booking.CarLicenseNumber);
+
+            car.CurrentMileage += viewModel.DistanceCovered;
+
+            context.AvailableCars.Update(car);
+
+            // Save current mileage on car and return status of booking
             await context.SaveChangesAsync();
 
-            await SetIsAvailable(booking.CarLicenseNumber);
 
-
+            await SetIsAvailable(booking.CarLicenseNumber);            
         }
 
         internal decimal TryGetCost(int id)
