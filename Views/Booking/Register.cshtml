@@ -1,8 +1,8 @@
 ﻿@model CarRental.Models.ViewModels.RegisterBookingVM
 
-@{
+@*@{
     ViewData["Title"] = "Register";
-}
+}*@
 
 <h1>Register Booking</h1>
 
@@ -18,12 +18,12 @@
             </div>
             <div class="form-group">
                 <label asp-for="CarType" class="control-label"></label>
-                <input asp-for="CarType" class="form-control" />
+                <select asp-for="CarType" id="CarType" value="Select car" onchange="setValues()" class="form-control" asp-items="@(new SelectList(ViewBag.AvailableCars, "CarType", "CarType"))"><option hidden disabled selected value="">Select Car</option></select>
                 <span asp-validation-for="CarType" class="text-danger"></span>
             </div>
             <div class="form-group">
                 <label asp-for="CarLicenseNumber" class="control-label"></label>
-                <input asp-for="CarLicenseNumber" class="form-control" />
+                <input asp-for="CarLicenseNumber" readonly="readonly" id="CarLicenseNumber" class="form-control" />
                 <span asp-validation-for="CarLicenseNumber" class="text-danger"></span>
             </div>
             <div class="form-group">
@@ -33,7 +33,7 @@
             </div>
             <div class="form-group">
                 <label asp-for="CurrentMileage" class="control-label"></label>
-                <input asp-for="CurrentMileage" class="form-control" />
+                <input asp-for="CurrentMileage" readonly="readonly" id="CurrentMileage" class="form-control" />
                 <span asp-validation-for="CurrentMileage" class="text-danger"></span>
             </div>
             <div class="form-group">
@@ -46,4 +46,58 @@
 <div>
     <a asp-action="GetBookings">Back to all bookings</a>
 </div>
+
+@*<div class="container-table">
+    <div id="divAvailableCars">
+    </div>
+</div>*@
+
+@*<script>
+ 
+
+    window.onload = function callWindowOnloadfunctions() {
+        console.log("runningwindowonload")
+        this.getAvailableCars()
+    }
+
+    function getAvailableCars() {
+        console.log("getting cars");
+        // Make AJAX call
+        var url = "/getcars";
+        $.ajax({
+            url: url,
+            type: "GET",
+            success: function (result) {
+                cars = result;
+                console.log(cars);
+                $("#divavailableCars").html(result);
+            }
+        });
+    }
+    var cars;
+    console.log(cars);
+
+
+</script>*@
+
+
+<script>
+
+    function setValues() {
+        var no = document.getElementById("CarType");
+
+        var index = no.selectedIndex -1
+        console.log(index)
+
+        var cars = JSON.parse('@Html.Raw(Json.Serialize(ViewData["AvailableCars"]))');
+            console.log(cars);
+
+        var currentMileage = cars[index].currentMileage;
+        var carLicenseNumber = cars[index].carLicenseNumber;
+
+        document.getElementById("CurrentMileage").value = currentMileage;
+        document.getElementById("CarLicenseNumber").value = carLicenseNumber;
+    }
+</script>
+
 

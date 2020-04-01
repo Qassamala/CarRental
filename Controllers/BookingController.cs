@@ -28,7 +28,12 @@ namespace CarRental.Controllers
         [Route("")]
         [Route("/Register")]
         public IActionResult Register()
-        {            
+        {
+            var availableCars = service.TryGetCars();
+
+            ViewData["AvailableCars"] = availableCars;
+            ViewBag.AvailableCars = availableCars;
+
             return View();
         }
 
@@ -37,7 +42,12 @@ namespace CarRental.Controllers
         public async Task<IActionResult> Register(RegisterBookingVM registerBooking)
         {
             if (!ModelState.IsValid)
+            {
+                var availableCars = service.TryGetCars();
+                ViewData["AvailableCars"] = availableCars;
+                ViewBag.AvailableCars = availableCars;
                 return View(registerBooking);
+            }
 
             await service.TryRegisterBookingAsync(registerBooking);
 
@@ -80,6 +90,17 @@ namespace CarRental.Controllers
             decimal cost = service.TryGetCost(id);
 
             ViewBag.Message = $"Total cost of rental is {cost} SEK";
+
+            return View();
+        }
+
+        [HttpGet]
+        [Route("/getcars")]
+        public IActionResult Getcars()
+        {
+            //var availableCars = service.TryGetCars();
+
+            //ViewBag.AvailableCars = availableCars;
 
             return View();
         }

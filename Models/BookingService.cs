@@ -29,7 +29,31 @@ namespace CarRental.Models
                 CurrentMileage = viewModel.CurrentMileage
             });
 
-            await context.SaveChangesAsync();            
+            await context.SaveChangesAsync();
+
+            await SetIsNotAvailable(viewModel.CarLicenseNumber);
+        }
+
+        public async Task SetIsNotAvailable(string carLicenseNumber)
+        {
+            var car = context.AvailableCars.Where(c => c.CarLicenseNumber == carLicenseNumber).FirstOrDefault();
+
+            car.IsAvailable = false;
+
+            context.AvailableCars.Update(car);
+
+            await context.SaveChangesAsync();
+        }
+
+        public async Task SetIsAvailable(string carLicenseNumber)
+        {
+            var car = context.AvailableCars.Where(c => c.CarLicenseNumber == carLicenseNumber).FirstOrDefault();
+
+            car.IsAvailable = true;
+
+            context.AvailableCars.Update(car);
+
+            await context.SaveChangesAsync();
         }
 
         public async Task TryRegisterReturnAsync(RegisterReturnVM viewModel)
@@ -41,6 +65,18 @@ namespace CarRental.Models
                 DistanceCovered = viewModel.DistanceCovered
             });
             await context.SaveChangesAsync();
+
+            var booking = GetBookingById(viewModel.BookingNumber);
+
+            booking.Returned = true;
+
+            context.Booking.Update(booking);
+
+            await context.SaveChangesAsync();
+
+            await SetIsAvailable(booking.CarLicenseNumber);
+
+
         }
 
         internal decimal TryGetCost(int id)
@@ -53,7 +89,7 @@ namespace CarRental.Models
 
             decimal kmPrice = 3;
 
-            var numberOfDays = (TimeSpan)(returnOfRental.TimeOfReturn - booking.TimeOfBooking);
+            var numberOfDays = (returnOfRental.TimeOfReturn - booking.TimeOfBooking);
 
             var numberOfKilometers = returnOfRental.DistanceCovered;
 
@@ -79,6 +115,11 @@ namespace CarRental.Models
 
             return finalPrice;
 
+        }
+
+        internal AvailableCars[] TryGetCars()
+        {
+            return context.AvailableCars.Where(c => c.IsAvailable == true).ToArray();
         }
 
         public Booking GetBookingById(int id)
@@ -135,7 +176,8 @@ namespace CarRental.Models
                     CarType = b.CarType,
                     CarLicenseNumber = b.CarLicenseNumber,
                     TimeOfBooking = (DateTime)b.TimeOfBooking,
-                    CurrentMileage = (int)b.CurrentMileage
+                    CurrentMileage = (int)b.CurrentMileage,
+                    Returned = b.Returned
                 }).ToArray();
 
             //var bookings = context.Booking.ToList();
