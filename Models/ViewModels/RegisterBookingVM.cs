@@ -10,7 +10,7 @@ namespace CarRental.Models.ViewModels
     {
         public int BookingNumber { get; set; }
         [Required(ErrorMessage = "SSN is required")]
-        [RegularExpression(@"^19\d{10}$", ErrorMessage = "Invalid Social Security Number")]
+        [RegularExpression(@"^(\d{10}|\d{12})$", ErrorMessage = "Invalid Social Security Number")]
         public string ClientSSN { get; set; }
         [Required]
         public string CarType { get; set; }
