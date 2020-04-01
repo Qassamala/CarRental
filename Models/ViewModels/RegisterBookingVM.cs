@@ -16,6 +16,14 @@ namespace CarRental.Models.ViewModels
         [RegularExpression(@"^(\d{10}|\d{12})$", ErrorMessage = "Invalid Social Security Number")]
         public string ClientSSN { get; set; }
 
+        [DisplayName("First Name")]
+        [Required]
+        public string FirstName { get; set; }
+
+        [DisplayName("Last Name")]
+        [Required]
+        public string LastName { get; set; }
+
         [DisplayName("Type of car")]
         [Required]
         public string CarType { get; set; }

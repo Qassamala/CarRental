@@ -18,6 +18,7 @@ namespace CarRental.Models.Entities
         public int CurrentMileage { get; set; }
         public bool Returned { get; set; }
 
+        public virtual Clients ClientSsnNavigation { get; set; }
         public virtual ICollection<ReturnOfRentalCar> ReturnOfRentalCar { get; set; }
     }
 }

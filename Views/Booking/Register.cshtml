@@ -4,7 +4,7 @@
     ViewData["Title"] = "Register";
 }*@
 
-<h1>Register Booking</h1>
+<h1>Book a car</h1>
 
 <hr />
 <div class="row">
@@ -17,19 +17,29 @@
                 <span asp-validation-for="ClientSSN" class="text-danger"></span>
             </div>
             <div class="form-group">
+                <label asp-for="FirstName" class="control-label"></label>
+                <input asp-for="FirstName" class="form-control" />
+                <span asp-validation-for="FirstName" class="text-danger"></span>
+            </div>
+            <div class="form-group">
+                <label asp-for="LastName" class="control-label"></label>
+                <input asp-for="LastName" class="form-control" />
+                <span asp-validation-for="LastName" class="text-danger"></span>
+            </div>
+            <div class="form-group">
                 <label asp-for="CarType" class="control-label"></label>
                 <select asp-for="CarType" id="CarType" value="Select car" onchange="setValues()" class="form-control" asp-items="@(new SelectList(ViewBag.AvailableCars, "CarType", "CarType"))"><option hidden disabled selected value="">Select Car</option></select>
                 <span asp-validation-for="CarType" class="text-danger"></span>
             </div>
             <div class="form-group">
-                <label asp-for="CarLicenseNumber" class="control-label"></label>
-                <input asp-for="CarLicenseNumber" readonly="readonly" id="CarLicenseNumber" class="form-control" />
-                <span asp-validation-for="CarLicenseNumber" class="text-danger"></span>
-            </div>
-            <div class="form-group">
                 <label asp-for="TimeOfBooking" class="control-label"></label>
                 <input asp-for="TimeOfBooking" type="datetime-local" class="form-control" />
                 <span asp-validation-for="TimeOfBooking" class="text-danger"></span>
+            </div>
+            <div class="form-group">
+                <label asp-for="CarLicenseNumber" class="control-label"></label>
+                <input asp-for="CarLicenseNumber" readonly="readonly" id="CarLicenseNumber" class="form-control" />
+                <span asp-validation-for="CarLicenseNumber" class="text-danger"></span>
             </div>
             <div class="form-group">
                 <label asp-for="CurrentMileage" class="control-label"></label>
@@ -41,10 +51,6 @@
             </div>
         </form>
     </div>
-</div>
-
-<div>
-    <a asp-action="GetBookings">Back to all bookings</a>
 </div>
 
 @*<div class="container-table">

@@ -1,0 +1,27 @@
+﻿
+@{
+    ViewData["Title"] = "Home";
+}
+
+<h1>Home</h1>
+
+<nav class="col-md-2 d-none d-md-block bg-light sidebar">
+    <div class="sidebar-sticky">
+        <ul class="nav flex-column">
+            @*<li id="iconbar" class="nav-item">
+
+                <span data-feather="home"></span>
+            </li>*@
+            <li class="nav-item">
+                <a class="nav-link" asp-controller="Booking" asp-action="Register">Book a car</a>
+            </li>
+            <li class="nav-item">
+                <a class="nav-link" asp-controller="Booking" asp-action="GetBookings">Show all bookings</a>
+            </li>
+            <li class="nav-item">
+                <a class="nav-link" asp-controller="Booking" asp-action="ClientList">Show all clients</a>
+            </li>
+        </ul>
+    </div>
+</nav>
+

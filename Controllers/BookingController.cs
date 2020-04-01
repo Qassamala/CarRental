@@ -18,10 +18,19 @@ namespace CarRental.Controllers
             this.service = service;
         }
 
-        [Route("/Index")]
-        public IActionResult Index()
+        [HttpGet]
+        [Route("/Home")]
+        public IActionResult Home()
         {
             return View();
+        }
+
+        [HttpGet]
+        [Route("/Clients")]
+        public IActionResult ClientList()
+        {
+            var clients = service.TryGetAllClients();
+            return View(clients);
         }
 
         [HttpGet]

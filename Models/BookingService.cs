@@ -18,6 +18,18 @@ namespace CarRental.Models
         }
         public async Task TryRegisterBookingAsync(RegisterBookingVM viewModel)
         {
+            var client = context.Clients.Any(c => c.ClientSsn == viewModel.ClientSSN);
+
+            if (client == false)
+            {
+                context.Add(new Clients {
+                    ClientSsn= viewModel.ClientSSN,
+                    FirstName = viewModel.FirstName,
+                    LastName = viewModel.LastName
+                });
+
+                await context.SaveChangesAsync();
+            }
 
             context.Add(new Booking
             {
@@ -32,6 +44,11 @@ namespace CarRental.Models
             await context.SaveChangesAsync();
 
             await SetIsNotAvailable(viewModel.CarLicenseNumber);
+        }
+
+        internal Clients[] TryGetAllClients()
+        {
+            return context.Clients.ToArray();
         }
 
         public AvailableCars GetCar(string carLicenseNumber)

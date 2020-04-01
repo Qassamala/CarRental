@@ -17,16 +17,8 @@ namespace CarRental.Models.Entities
 
         public virtual DbSet<AvailableCars> AvailableCars { get; set; }
         public virtual DbSet<Booking> Booking { get; set; }
+        public virtual DbSet<Clients> Clients { get; set; }
         public virtual DbSet<ReturnOfRentalCar> ReturnOfRentalCar { get; set; }
-
-        protected override void OnConfiguring(DbContextOptionsBuilder optionsBuilder)
-        {
-            if (!optionsBuilder.IsConfigured)
-            {
-#warning To protect potentially sensitive information in your connection string, you should move it out of source code. See http://go.microsoft.com/fwlink/?LinkId=723263 for guidance on storing connection strings.
-                optionsBuilder.UseSqlServer("Data Source=(localdb)\\MSSQLLocalDB;Initial Catalog=CarRental;Integrated Security=True;Connect Timeout=30;Encrypt=False;TrustServerCertificate=False;ApplicationIntent=ReadWrite;MultiSubnetFailover=False");
-            }
-        }
 
         protected override void OnModelCreating(ModelBuilder modelBuilder)
         {
@@ -54,7 +46,7 @@ namespace CarRental.Models.Entities
             modelBuilder.Entity<Booking>(entity =>
             {
                 entity.HasKey(e => e.BookingNumber)
-                    .HasName("PK__Booking__AAC320BECD8AFF54");
+                    .HasName("PK__Booking__AAC320BE34218BFD");
 
                 entity.Property(e => e.CarLicenseNumber)
                     .IsRequired()
@@ -73,6 +65,36 @@ namespace CarRental.Models.Entities
                     .IsUnicode(false);
 
                 entity.Property(e => e.TimeOfBooking).HasColumnType("datetime");
+
+                entity.HasOne(d => d.ClientSsnNavigation)
+                    .WithMany(p => p.Booking)
+                    .HasPrincipalKey(p => p.ClientSsn)
+                    .HasForeignKey(d => d.ClientSsn)
+                    .OnDelete(DeleteBehavior.ClientSetNull)
+                    .HasConstraintName("FK__Booking__ClientS__09A971A2");
+            });
+
+            modelBuilder.Entity<Clients>(entity =>
+            {
+                entity.HasIndex(e => e.ClientSsn)
+                    .HasName("UQ__Clients__775D2E9C99FC423E")
+                    .IsUnique();
+
+                entity.Property(e => e.ClientSsn)
+                    .IsRequired()
+                    .HasColumnName("ClientSSN")
+                    .HasMaxLength(32)
+                    .IsUnicode(false);
+
+                entity.Property(e => e.FirstName)
+                    .IsRequired()
+                    .HasMaxLength(64)
+                    .IsUnicode(false);
+
+                entity.Property(e => e.LastName)
+                    .IsRequired()
+                    .HasMaxLength(64)
+                    .IsUnicode(false);
             });
 
             modelBuilder.Entity<ReturnOfRentalCar>(entity =>
@@ -83,7 +105,7 @@ namespace CarRental.Models.Entities
                     .WithMany(p => p.ReturnOfRentalCar)
                     .HasForeignKey(d => d.BookingNumber)
                     .OnDelete(DeleteBehavior.ClientSetNull)
-                    .HasConstraintName("FK__ReturnOfR__Booki__787EE5A0");
+                    .HasConstraintName("FK__ReturnOfR__Booki__0D7A0286");
             });
 
             OnModelCreatingPartial(modelBuilder);
