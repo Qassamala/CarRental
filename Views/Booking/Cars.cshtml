@@ -1,0 +1,69 @@
+﻿@model IEnumerable<CarRental.Models.Entities.AvailableCars>
+
+@{
+    ViewData["Title"] = "Cars";
+}
+
+<h1>Cars</h1>
+
+<table class="table">
+    <thead>
+        <tr>
+            <th>
+                @Html.DisplayNameFor(model => model.Id)
+            </th>
+            <th>
+                @Html.DisplayNameFor(model => model.CarType)
+            </th>
+            <th>
+                @Html.DisplayNameFor(model => model.CarLicenseNumber)
+            </th>
+            <th>
+                @Html.DisplayNameFor(model => model.CurrentMileage)
+            </th>
+            <th>
+                @Html.DisplayNameFor(model => model.IsAvailable)
+            </th>
+            <th>
+                @Html.DisplayNameFor(model => model.CleaningRequired)
+            </th>
+            <th>
+                @Html.DisplayNameFor(model => model.ServiceRequired)
+            </th>
+            <th></th>
+        </tr>
+    </thead>
+    <tbody>
+@foreach (var item in Model) {
+        <tr>
+            <td>
+                @Html.DisplayFor(modelItem => item.Id)
+            </td>
+            <td>
+                @Html.DisplayFor(modelItem => item.CarType)
+            </td>
+            <td>
+                @Html.DisplayFor(modelItem => item.CarLicenseNumber)
+            </td>
+            <td>
+                @Html.DisplayFor(modelItem => item.CurrentMileage)
+            </td>
+            <td>
+                @Html.DisplayFor(modelItem => item.IsAvailable)
+            </td>
+            <td>
+                @Html.DisplayFor(modelItem => item.CleaningRequired)
+            </td>
+            <td>
+                @Html.DisplayFor(modelItem => item.ServiceRequired)
+            </td>
+            <td>
+                <a asp-controller="Booking" asp-action="Clean" asp-route-id="@item.CarLicenseNumber">Car is Cleaned</a>
+                @*@Html.ActionLink("Edit", "Edit", new { /* id=item.PrimaryKey */ }) |
+        @Html.ActionLink("Details", "Details", new { /* id=item.PrimaryKey */ }) |
+        @Html.ActionLink("Delete", "Delete", new { /* id=item.PrimaryKey */ })*@
+            </td>
+        </tr>
+}
+    </tbody>
+</table>

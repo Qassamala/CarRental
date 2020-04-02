@@ -19,6 +19,7 @@ namespace CarRental.Controllers
         }
 
         [HttpGet]
+        [Route("")]
         [Route("/Home")]
         public IActionResult Home()
         {
@@ -34,11 +35,10 @@ namespace CarRental.Controllers
         }
 
         [HttpGet]
-        [Route("")]
         [Route("/Register")]
         public IActionResult Register()
         {
-            var availableCars = service.TryGetCars();
+            var availableCars = service.TryGetAvailableCars();
 
             ViewData["AvailableCars"] = availableCars;
             ViewBag.AvailableCars = availableCars;
@@ -52,7 +52,7 @@ namespace CarRental.Controllers
         {
             if (!ModelState.IsValid)
             {
-                var availableCars = service.TryGetCars();
+                var availableCars = service.TryGetAvailableCars();
                 ViewData["AvailableCars"] = availableCars;
                 ViewBag.AvailableCars = availableCars;
                 return View(registerBooking);
@@ -68,6 +68,15 @@ namespace CarRental.Controllers
         public IActionResult GetBookings()
         {
             var bookings = service.GetBookings();
+
+            return View(bookings);
+        }
+
+        [HttpGet]
+        [Route("/Bookings/{id}")]
+        public IActionResult GetBookingsByClient(int id)
+        {
+            var bookings = service.GetBookingsByClient(id);
 
             return View(bookings);
         }
@@ -93,6 +102,24 @@ namespace CarRental.Controllers
         }
 
         [HttpGet]
+        [Route("/Cars")]
+        public IActionResult Cars()
+        {
+            var allCars = service.TryGetAllCars();
+
+            return View(allCars);
+        }
+
+        [HttpPost]
+        [Route("/Clean/{carLicenseNumber}")]
+        public async Task<IActionResult> Clean(string carLicenseNumber)
+        {
+            await service.SetCarIsCleaned(carLicenseNumber);
+
+            return RedirectToAction(nameof(Cars));
+        }
+
+        [HttpGet]
         [Route("/GetCost/{id}")]
         public IActionResult GetCost(int id)
         {
@@ -103,16 +130,16 @@ namespace CarRental.Controllers
             return View();
         }
 
-        [HttpGet]
-        [Route("/getcars")]
-        public IActionResult Getcars()
-        {
-            //var availableCars = service.TryGetCars();
+        //[HttpGet]
+        //[Route("/getcars")]
+        //public IActionResult Getcars()
+        //{
+        //    //var availableCars = service.TryGetCars();
 
-            //ViewBag.AvailableCars = availableCars;
+        //    //ViewBag.AvailableCars = availableCars;
 
-            return View();
-        }
+        //    return View();
+        //}
 
     }
 }

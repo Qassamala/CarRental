@@ -1,0 +1,82 @@
+﻿@model IEnumerable<CarRental.Models.ViewModels.RegisterBookingVM>
+
+@{
+    ViewData["Title"] = "List of Bookings";
+}
+
+<h1>List of Bookings for client</h1>
+
+<p>
+    <a asp-action="Register">Register booking</a>
+</p>
+<table class="table">
+    <thead>
+        <tr>
+            <th>
+                @Html.DisplayNameFor(model => model.BookingNumber)
+            </th>
+            <th>
+                @Html.DisplayNameFor(model => model.ClientSSN)
+            </th>
+            <th>
+                @Html.DisplayNameFor(model => model.CarType)
+            </th>
+            <th>
+                @Html.DisplayNameFor(model => model.CarLicenseNumber)
+            </th>
+            <th>
+                @Html.DisplayNameFor(model => model.TimeOfBooking)
+            </th>
+            <th>
+                @Html.DisplayNameFor(model => model.CurrentMileage)
+            </th>
+            <th>
+                @Html.DisplayNameFor(model => model.Returned)
+            </th>
+        </tr>
+    </thead>
+    <tbody>
+        @foreach (var item in Model)
+        {
+            <tr>
+                <td>
+                    @Html.DisplayFor(modelItem => item.BookingNumber)
+                </td>
+                <td>
+                    @Html.DisplayFor(modelItem => item.ClientSSN)
+                </td>
+                <td>
+                    @Html.DisplayFor(modelItem => item.CarType)
+                </td>
+                <td>
+                    @Html.DisplayFor(modelItem => item.CarLicenseNumber)
+                </td>
+                <td>
+                    @Html.DisplayFor(modelItem => item.TimeOfBooking)
+                </td>
+                <td>
+                    @Html.DisplayFor(modelItem => item.CurrentMileage)
+                </td>
+                <td>
+                    @if (item.Returned == false)
+                    {
+                        @Html.Raw("Ongoing");
+                    }
+                    else
+                    {
+                        @Html.Raw("Returned");
+
+                    }
+                </td>
+                <td>
+                    @if (item.Returned == false)
+                    {
+                        <a asp-controller="Booking" asp-action="Return" asp-route-id="@item.BookingNumber">Return</a>
+                    }
+                </td>
+            </tr>
+        }
+    </tbody>
+</table>
+
+

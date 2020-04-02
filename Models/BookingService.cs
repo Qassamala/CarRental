@@ -100,13 +100,55 @@ namespace CarRental.Models
 
             car.CurrentMileage += viewModel.DistanceCovered;
 
+            // Cleaning is required everytime after return
+            car.CleaningRequired = true;
+
+            car.TimesRented += 1;
+
             context.AvailableCars.Update(car);
 
-            // Save current mileage on car and return status of booking
+            // Save current mileage on car, times rented and cleaning required
             await context.SaveChangesAsync();
 
+            // Service is required after every third rental
+            if (car.TimesRented % 3 == 0)
+            {
+                car.ServiceRequired = true;
+                context.AvailableCars.Update(car);
+                await context.SaveChangesAsync();
+            }
+        }
 
-            await SetIsAvailable(booking.CarLicenseNumber);            
+        public async Task SetCarIsCleaned(string carLicenseNumber)
+        {
+            var car = GetCar(carLicenseNumber);
+
+            car.CleaningRequired = false;
+
+            context.AvailableCars.Update(car);
+            await context.SaveChangesAsync();
+
+            // Set car i available only if no cleaning and service is required
+            if (!car.CleaningRequired && !car.ServiceRequired)
+            {
+                await SetIsAvailable(carLicenseNumber);
+            }
+        }
+
+        public async Task SetCarIsServiced(string carLicenseNumber)
+        {
+            var car = GetCar(carLicenseNumber);
+
+            car.ServiceRequired = false;
+
+            context.AvailableCars.Update(car);
+            await context.SaveChangesAsync();
+
+            // Set car is available only if no cleaning and service is required
+            if (!car.CleaningRequired && !car.ServiceRequired)
+            {
+                await SetIsAvailable(carLicenseNumber);
+            }
         }
 
         internal decimal TryGetCost(int id)
@@ -147,50 +189,44 @@ namespace CarRental.Models
 
         }
 
-        internal AvailableCars[] TryGetCars()
+        internal AvailableCars[] TryGetAvailableCars()
         {
             return context.AvailableCars.Where(c => c.IsAvailable == true).ToArray();
+        }
+
+        internal AvailableCars[] TryGetAllCars()
+        {
+            return context.AvailableCars.ToArray();
         }
 
         public Booking GetBookingById(int id)
         {
             return context.Booking.Where(b => b.BookingNumber == id).FirstOrDefault();
-
-            //var booking = bookings.Where(b => b.BookingNumber == bookingNumber).FirstOrDefault();
-
-            //RegisterBookingVM bookingViewModel = new RegisterBookingVM
-            //{
-            //    BookingNumber = booking.BookingNumber,
-            //    ClientSSN = booking.ClientSsn,
-            //    CarType = booking.CarType,
-            //    CarLicenseNumber = booking.CarLicenseNumber,
-            //    TimeOfBooking = (DateTime)booking.TimeOfBooking,
-            //    CurrentMileage = (int)booking.CurrentMileage
-            //};
-
-            //return bookingViewModel;
         }
 
         public ReturnOfRentalCar GetReturnOfRentalCarById(int id)
         {
-
             return context.ReturnOfRentalCar.Where(b => b.BookingNumber == id).FirstOrDefault();
+        }
 
-            //var bookings = context.Booking.ToList();
+        public RegisterBookingVM[] GetBookingsByClient(int id)
+        {
+            var clientSSN = context.Clients
+                .Where(c => c.Id == id)
+                .Select(c => c.ClientSsn)
+                .FirstOrDefault();
 
-            //var booking = bookings.Where(b => b.BookingNumber == bookingNumber).FirstOrDefault();
-
-            //RegisterBookingVM bookingViewModel = new RegisterBookingVM
-            //{
-            //    BookingNumber = booking.BookingNumber,
-            //    ClientSSN = booking.ClientSsn,
-            //    CarType = booking.CarType,
-            //    CarLicenseNumber = booking.CarLicenseNumber,
-            //    TimeOfBooking = (DateTime)booking.TimeOfBooking,
-            //    CurrentMileage = (int)booking.CurrentMileage
-            //};
-
-            //return bookingViewModel;
+            return context.Booking.Where(b => b.ClientSsn == clientSSN)
+            .Select(b => new RegisterBookingVM
+            {
+                BookingNumber = b.BookingNumber,
+                ClientSSN = b.ClientSsn,
+                CarType = b.CarType,
+                CarLicenseNumber = b.CarLicenseNumber,
+                TimeOfBooking = b.TimeOfBooking,
+                CurrentMileage = b.CurrentMileage,
+                Returned = b.Returned
+            }).ToArray();
         }
 
 
@@ -198,33 +234,17 @@ namespace CarRental.Models
         public RegisterBookingVM[] GetBookings()
         {
 
-            return context.Booking
-                .Select(b => new RegisterBookingVM
-                {
-                    BookingNumber = b.BookingNumber,
-                    ClientSSN = b.ClientSsn,
-                    CarType = b.CarType,
-                    CarLicenseNumber = b.CarLicenseNumber,
-                    TimeOfBooking = (DateTime)b.TimeOfBooking,
-                    CurrentMileage = (int)b.CurrentMileage,
-                    Returned = b.Returned
-                }).ToArray();
-
-            //var bookings = context.Booking.ToList();
-
-            //var booking = bookings.Where(b => b.BookingNumber == bookingNumber).FirstOrDefault();
-
-            //RegisterBookingVM bookingViewModel = new RegisterBookingVM
-            //{
-            //    BookingNumber = booking.BookingNumber,
-            //    ClientSSN = booking.ClientSsn,
-            //    CarType = booking.CarType,
-            //    CarLicenseNumber = booking.CarLicenseNumber,
-            //    TimeOfBooking = (DateTime)booking.TimeOfBooking,
-            //    CurrentMileage = (int)booking.CurrentMileage
-            //};
-
-            //return bookingViewModel;
+        return context.Booking.Where(b=> b.Returned == false)
+            .Select(b => new RegisterBookingVM
+            {
+                BookingNumber = b.BookingNumber,
+                ClientSSN = b.ClientSsn,
+                CarType = b.CarType,
+                CarLicenseNumber = b.CarLicenseNumber,
+                TimeOfBooking = b.TimeOfBooking,
+                CurrentMileage = b.CurrentMileage,
+                Returned = b.Returned
+            }).ToArray();       
         }
     }
 }
