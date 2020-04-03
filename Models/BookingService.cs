@@ -100,22 +100,28 @@ namespace CarRental.Models
 
             car.CurrentMileage += viewModel.DistanceCovered;
 
-            // Cleaning is required everytime after return
-            car.CleaningRequired = true;
-
             car.TimesRented += 1;
 
             context.AvailableCars.Update(car);
 
-            // Save current mileage on car, times rented and cleaning required
+            // Save current mileage on car and times rented
             await context.SaveChangesAsync();
 
-            // Service is required after every third rental
-            if (car.TimesRented % 3 == 0)
+            if (car.CurrentMileage <= 2000)
             {
-                car.ServiceRequired = true;
+                // Cleaning is required everytime after return
+                car.CleaningRequired = true;
                 context.AvailableCars.Update(car);
+                // Save current mileage on car, times rented and cleaning required
                 await context.SaveChangesAsync();
+
+                // Service is required after every third rental
+                if (car.TimesRented % 3 == 0)
+                {
+                    car.ServiceRequired = true;
+                    context.AvailableCars.Update(car);
+                    await context.SaveChangesAsync();
+                }
             }
         }
 

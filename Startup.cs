@@ -31,6 +31,8 @@ namespace CarRental
             services.AddControllersWithViews();
 
             services.AddTransient<BookingService>();
+            services.AddTransient<CarService>();
+
 
         }
 

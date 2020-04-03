@@ -1,0 +1,36 @@
+﻿@model CarRental.Models.ViewModels.AddCarVM
+
+@{
+    ViewData["Title"] = "Create";
+}
+
+<h1>Add rentalcar</h1>
+
+
+<hr />
+<div class="row">
+    <div class="col-md-4">
+        <form asp-action="Create">
+            <div asp-validation-summary="ModelOnly" class="text-danger"></div>
+            <div class="form-group">
+                <label asp-for="CarType" class="control-label"></label>
+                <input asp-for="CarType" class="form-control" />
+                <span asp-validation-for="CarType" class="text-danger"></span>
+            </div>
+            <div class="form-group">
+                <label asp-for="CarLicenseNumber" class="control-label"></label>
+                <input asp-for="CarLicenseNumber" class="form-control" />
+                <span asp-validation-for="CarLicenseNumber" class="text-danger"></span>
+            </div>
+            <div class="form-group">
+                <label asp-for="CurrentMileage" class="control-label"></label>
+                <input asp-for="CurrentMileage" class="form-control" />
+                <span asp-validation-for="CurrentMileage" class="text-danger"></span>
+            </div>
+            <div class="form-group">
+                <input type="submit" value="Create" class="btn btn-primary" />
+            </div>
+        </form>
+    </div>
+</div>
+

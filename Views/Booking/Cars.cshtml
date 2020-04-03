@@ -6,6 +6,10 @@
 
 <h1>Cars</h1>
 
+    <p>
+        <a asp-controller="Car" asp-action="Create">Add new rentalcar</a>
+    </p>
+
 <table class="table">
     <thead>
         <tr>
@@ -30,40 +34,81 @@
             <th>
                 @Html.DisplayNameFor(model => model.ServiceRequired)
             </th>
+            <th>
+                @Html.DisplayNameFor(model => model.TimesRented)
+            </th>
             <th></th>
         </tr>
     </thead>
     <tbody>
-@foreach (var item in Model) {
-        <tr>
-            <td>
-                @Html.DisplayFor(modelItem => item.Id)
-            </td>
-            <td>
-                @Html.DisplayFor(modelItem => item.CarType)
-            </td>
-            <td>
-                @Html.DisplayFor(modelItem => item.CarLicenseNumber)
-            </td>
-            <td>
-                @Html.DisplayFor(modelItem => item.CurrentMileage)
-            </td>
-            <td>
-                @Html.DisplayFor(modelItem => item.IsAvailable)
-            </td>
-            <td>
-                @Html.DisplayFor(modelItem => item.CleaningRequired)
-            </td>
-            <td>
-                @Html.DisplayFor(modelItem => item.ServiceRequired)
-            </td>
-            <td>
-                <a asp-controller="Booking" asp-action="Clean" asp-route-id="@item.CarLicenseNumber">Car is Cleaned</a>
-                @*@Html.ActionLink("Edit", "Edit", new { /* id=item.PrimaryKey */ }) |
-        @Html.ActionLink("Details", "Details", new { /* id=item.PrimaryKey */ }) |
-        @Html.ActionLink("Delete", "Delete", new { /* id=item.PrimaryKey */ })*@
-            </td>
-        </tr>
-}
+        @foreach (var item in Model)
+        {
+            <tr>
+                <td>
+                    @Html.DisplayFor(modelItem => item.Id)
+                </td>
+                <td>
+                    @Html.DisplayFor(modelItem => item.CarType)
+                </td>
+                <td>
+                    @Html.DisplayFor(modelItem => item.CarLicenseNumber)
+                </td>
+                <td>
+                    @Html.DisplayFor(modelItem => item.CurrentMileage)
+                </td>
+                <td>
+                    @if (item.IsAvailable == false)
+                    {
+                        @Html.Raw("No");
+                    }
+                    else
+                    {
+                        @Html.Raw("Yes");
+                    }
+                </td>
+                <td>
+                    @if (item.CleaningRequired == false)
+                    {
+                        @Html.Raw("No");
+                    }
+                    else
+                    {
+                        @Html.Raw("Yes");
+                    }
+                </td>
+                <td>
+                    @if (item.ServiceRequired == false)
+                    {
+                        @Html.Raw("No");
+                    }
+                    else
+                    {
+                        @Html.Raw("Yes");
+                    }
+                </td>
+                <td>
+                    @Html.DisplayFor(modelItem => item.TimesRented)
+                </td>
+                <td>
+                    @if (item.CleaningRequired == true)
+                    {
+                        <form asp-controller="Booking" asp-action="Clean" asp-route-carLicenseNumber="@item.CarLicenseNumber"><input type="submit" value="Is cleaned" /></form>
+                    }
+                </td>
+                <td>
+                    @if (item.ServiceRequired == true)
+                    {
+                        <form asp-controller="Booking" asp-action="Service" asp-route-carLicenseNumber="@item.CarLicenseNumber"><input type="submit" value="Is serviced" /></form>
+                    }
+                </td>
+                <td>
+                    @if (item.CurrentMileage > 2000)
+                    {
+                        @Html.Raw("Car has exceeded its usage limit of 2000 km");
+                    }
+                </td>
+
+            </tr>
+        }
     </tbody>
 </table>

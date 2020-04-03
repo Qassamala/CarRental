@@ -117,6 +117,16 @@ namespace CarRental.Controllers
             await service.SetCarIsCleaned(carLicenseNumber);
 
             return RedirectToAction(nameof(Cars));
+
+        }
+
+        [HttpPost]
+        [Route("/Service/{carLicenseNumber}")]
+        public async Task<IActionResult> Service(string carLicenseNumber)
+        {
+            await service.SetCarIsServiced(carLicenseNumber);
+
+            return RedirectToAction(nameof(Cars));
         }
 
         [HttpGet]
