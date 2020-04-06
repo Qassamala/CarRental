@@ -13,7 +13,7 @@
             <div asp-validation-summary="ModelOnly" class="text-danger"></div>
             <div class="form-group">
                 <label asp-for="ClientSSN" class="control-label"></label>
-                <input asp-for="ClientSSN" id="SSN" onblur="checkIfSSNExists()" class="form-control" />
+                <input asp-for="ClientSSN" id="SSN" onblur="checkIfSSNExists()" class="form-control" /><div id="SSNMessage"></div>
                 <span asp-validation-for="ClientSSN" class="text-danger"></span>
             </div>
             <div class="form-group">
@@ -98,6 +98,7 @@
                     document.getElementById("lastName").value = result.lastName;
                     $('#firstName').attr('readonly', 'true');
                     $('#lastName').attr('readonly', 'true');
+                    $("#SSNMessage").html("<p>" + "ClientSSN exists" + "</p>");
                 }
                 else if (result === null) {
                     console.log("result is null")
@@ -105,29 +106,12 @@
                     document.getElementById("lastName").value = "";
                     $('#firstName').prop("readonly", false);
                     $('#lastName').prop("readonly", false);
+                    $("#SSNMessage").html("");
                 }                
             },
         });
         console.log("done");
     }
-
-    //function checkIfSSNExists() {
-    //    console.log("running ajax call")
-    //    $.ajax({
-    //        type: "POST",
-    //        url: "JqueryAjaxPost.aspx/checkUserName",
-    //        data: "{IDVal: '" + $("#<% =SSN.ClientSSN %>").val() + "' }",
-    //        contentType: "application/json; charset=utf-8",
-    //        dataType: "json",
-    //        success: onSuccess,
-    //        failure: function (AjaxResponse) {
-    //            document.getElementById("Label1").innerHTML = "Dfgdfg";
-    //        }
-    //    });
-    //    function onSuccess(AjaxResponse) {
-    //        document.getElementById("Label1").innerHTML = AjaxResponse.d;
-    //    }
-    //}
 </script>
 
 
