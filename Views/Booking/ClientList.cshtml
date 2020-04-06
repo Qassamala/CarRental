@@ -10,9 +10,6 @@
     <thead>
         <tr>
             <th>
-                @Html.DisplayNameFor(model => model.Id)
-            </th>
-            <th>
                 @Html.DisplayNameFor(model => model.FirstName)
             </th>
             <th>
@@ -21,15 +18,18 @@
             <th>
                 @Html.DisplayNameFor(model => model.ClientSsn)
             </th>
+            <th>
+                @Html.DisplayNameFor(model => model.LoyaltyLevel)
+            </th>
+            <th>
+                @Html.DisplayNameFor(model => model.DistanceCovered)
+            </th>
             <th></th>
         </tr>
     </thead>
     <tbody>
 @foreach (var item in Model) {
         <tr>
-            <td>
-                @Html.DisplayFor(modelItem => item.Id)
-            </td>
             <td>
                 @Html.DisplayFor(modelItem => item.FirstName)
             </td>
@@ -40,7 +40,14 @@
                 @Html.DisplayFor(modelItem => item.ClientSsn)
             </td>
             <td>
-                <a asp-controller="Booking" asp-action="GetBookingsByClient" asp-route-id="@item.Id">Client history</a>
+                @Html.DisplayFor(modelItem => item.LoyaltyLevel)
+            </td>
+            <td>
+                @Html.DisplayFor(modelItem => item.DistanceCovered)
+            </td>
+            <td>
+                <a asp-controller="Booking" asp-action="GetBookingsByClient" asp-route-id="@item.Id">Booking history</a>
+                <a asp-controller="Car" asp-action="ClientEvents" asp-route-id="@item.Id">Event log</a>
             </td>
         </tr>
 }

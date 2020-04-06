@@ -43,72 +43,75 @@
     <tbody>
         @foreach (var item in Model)
         {
-            <tr>
-                <td>
-                    @Html.DisplayFor(modelItem => item.Id)
-                </td>
-                <td>
-                    @Html.DisplayFor(modelItem => item.CarType)
-                </td>
-                <td>
-                    @Html.DisplayFor(modelItem => item.CarLicenseNumber)
-                </td>
-                <td>
-                    @Html.DisplayFor(modelItem => item.CurrentMileage)
-                </td>
-                <td>
-                    @if (item.IsAvailable == false)
-                    {
-                        @Html.Raw("No");
-                    }
-                    else
-                    {
-                        @Html.Raw("Yes");
-                    }
-                </td>
-                <td>
-                    @if (item.CleaningRequired == false)
-                    {
-                        @Html.Raw("No");
-                    }
-                    else
-                    {
-                        @Html.Raw("Yes");
-                    }
-                </td>
-                <td>
-                    @if (item.ServiceRequired == false)
-                    {
-                        @Html.Raw("No");
-                    }
-                    else
-                    {
-                        @Html.Raw("Yes");
-                    }
-                </td>
-                <td>
-                    @Html.DisplayFor(modelItem => item.TimesRented)
-                </td>
-                <td>
-                    @if (item.CleaningRequired == true)
-                    {
-                        <form asp-controller="Booking" asp-action="Clean" asp-route-carLicenseNumber="@item.CarLicenseNumber"><input type="submit" value="Is cleaned" /></form>
-                    }
-                </td>
-                <td>
-                    @if (item.ServiceRequired == true)
-                    {
-                        <form asp-controller="Booking" asp-action="Service" asp-route-carLicenseNumber="@item.CarLicenseNumber"><input type="submit" value="Is serviced" /></form>
-                    }
-                </td>
-                <td>
-                    @if (item.CurrentMileage > 2000)
-                    {
-                        @Html.Raw("Car has exceeded its usage limit of 2000 km");
-                    }
-                </td>
+        <tr>
+            <td>
+                @Html.DisplayFor(modelItem => item.Id)
+            </td>
+            <td>
+                @Html.DisplayFor(modelItem => item.CarType)
+            </td>
+            <td>
+                @Html.DisplayFor(modelItem => item.CarLicenseNumber)
+            </td>
+            <td>
+                @Html.DisplayFor(modelItem => item.CurrentMileage)
+            </td>
+            <td>
+                @if (item.IsAvailable == false)
+                {
+                    @Html.Raw("No");
+                }
+                else
+                {
+                    @Html.Raw("Yes");
+                }
+            </td>
+            <td>
+                @if (item.CleaningRequired == false)
+                {
+                    @Html.Raw("No");
+                }
+                else
+                {
+                    @Html.Raw("Yes");
+                }
+            </td>
+            <td>
+                @if (item.ServiceRequired == false)
+                {
+                    @Html.Raw("No");
+                }
+                else
+                {
+                    @Html.Raw("Yes");
+                }
+            </td>
+            <td>
+                @Html.DisplayFor(modelItem => item.TimesRented)
+            </td>
+            <td>
+                @if (item.CleaningRequired == true)
+                {
+                    <form asp-controller="Booking" asp-action="Clean" asp-route-carLicenseNumber="@item.CarLicenseNumber"><input type="submit" value="Is cleaned" /></form>
+                }
+            </td>
+            <td>
+                @if (item.ServiceRequired == true)
+                {
+                    <form asp-controller="Booking" asp-action="Service" asp-route-carLicenseNumber="@item.CarLicenseNumber"><input type="submit" value="Is serviced" /></form>
+                }
+            </td>
+            <td>
+                @if (item.CurrentMileage > 2000)
+                {
+                    @Html.Raw("Car has exceeded its usage limit of 2000 km");
+                }
+            </td>
+            <td>
+                <a asp-controller="Car" asp-action="CarEvents" asp-route-id="@item.Id">Event log</a>
+            </td>
 
-            </tr>
+        </tr>
         }
     </tbody>
 </table>

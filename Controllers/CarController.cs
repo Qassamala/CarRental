@@ -25,6 +25,25 @@ namespace CarRental.Controllers
             return View();
         }
 
+        [HttpGet]
+        [Route("/ClientEvents/{id}")]
+        public IActionResult ClientEvents(int id)
+        {
+            var events = service.GetEventsByClient(id);
+
+            return View(events);
+        }
+
+        [HttpGet]
+        [Route("/CarEvents/{id}")]
+        public IActionResult CarEvents(int id)
+        {
+
+            var events = service.GetEventsByCar(id);
+
+            return View(events);
+        }
+
         [HttpPost]
         [Route("/Create")]
         public async Task<IActionResult> Create(AddCarVM newCar)

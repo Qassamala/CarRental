@@ -1,0 +1,49 @@
+﻿@model IEnumerable<CarRental.Models.ViewModels.ClientEventVM>
+
+@{
+    ViewData["Title"] = "Events";
+}
+
+<table class="table">
+    <thead>
+        <tr>
+            <th>
+                @Html.DisplayNameFor(model => model.ClientSSN)
+            </th>
+            <th>
+                @Html.DisplayNameFor(model => model.CarLicenseNumber)
+            </th>
+            <th>
+                @Html.DisplayNameFor(model => model.TypeOfEvent)
+            </th>
+            <th>
+                @Html.DisplayNameFor(model => model.EventDescription)
+            </th>
+            <th>
+                @Html.DisplayNameFor(model => model.TimeOfEvent)
+            </th>
+            <th></th>
+        </tr>
+    </thead>
+    <tbody>
+@foreach (var item in Model) {
+        <tr>
+            <td>
+                @Html.DisplayFor(modelItem => item.ClientSSN)
+            </td>
+            <td>
+                @Html.DisplayFor(modelItem => item.CarLicenseNumber)
+            </td>
+            <td>
+                @Html.DisplayFor(modelItem => item.TypeOfEvent)
+            </td>
+            <td>
+                @Html.DisplayFor(modelItem => item.EventDescription)
+            </td>
+            <td>
+                @Html.DisplayFor(modelItem => item.TimeOfEvent)
+            </td>
+        </tr>
+}
+    </tbody>
+</table>

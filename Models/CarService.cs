@@ -29,6 +29,35 @@ namespace CarRental.Models
                 await context.SaveChangesAsync();
         }
 
+        internal ClientEventVM[] GetEventsByClient(int id)
+        {            
+            return context.ClientEvents
+                .Where(e => e.ClientId == id)
+                .Select(e => new ClientEventVM
+                {
+                    ClientSSN = context.Clients.Where(c => c.Id == id).Select(c => c.ClientSsn).FirstOrDefault(),
+                    CarLicenseNumber = context.AvailableCars.Where(c => c.Id == e.CarId).Select(car => car.CarLicenseNumber).FirstOrDefault(),
+                    EventDescription = e.EventDescription,
+                    TypeOfEvent = e.TypeOfEvent,
+                    TimeOfEvent = e.TimeOfEvent
+                })
+                .ToArray();
+        }
+
+        internal CarEventVM[] GetEventsByCar(int carId)
+        {
+                    return context.CarEvents
+            .Where(e => e.CarId == carId)
+            .Select(e => new CarEventVM
+            {
+                CarLicenseNumber = context.AvailableCars.Where(c => c.Id == e.CarId).Select(car => car.CarLicenseNumber).FirstOrDefault(),
+                EventDescription = e.EventDescription,
+                TypeOfEvent = e.TypeOfEvent,
+                TimeOfEvent = e.TimeOfEvent
+            })
+            .ToArray();
+        }
+
         internal bool CheckIfCarExists(AddCarVM newCar)
         {
             var car = context.AvailableCars.Any(c => c.CarLicenseNumber == newCar.CarLicenseNumber);

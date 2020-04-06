@@ -17,6 +17,8 @@ namespace CarRental.Models.Entities
 
         public virtual DbSet<AvailableCars> AvailableCars { get; set; }
         public virtual DbSet<Booking> Booking { get; set; }
+        public virtual DbSet<CarEvents> CarEvents { get; set; }
+        public virtual DbSet<ClientEvents> ClientEvents { get; set; }
         public virtual DbSet<Clients> Clients { get; set; }
         public virtual DbSet<ReturnOfRentalCar> ReturnOfRentalCar { get; set; }
 
@@ -74,6 +76,54 @@ namespace CarRental.Models.Entities
                     .HasConstraintName("FK__Booking__ClientS__09A971A2");
             });
 
+            modelBuilder.Entity<CarEvents>(entity =>
+            {
+                entity.Property(e => e.EventDescription)
+                    .IsRequired()
+                    .HasMaxLength(128)
+                    .IsUnicode(false);
+
+                entity.Property(e => e.TimeOfEvent).HasColumnType("datetime");
+
+                entity.Property(e => e.TypeOfEvent)
+                    .IsRequired()
+                    .HasMaxLength(128)
+                    .IsUnicode(false);
+
+                entity.HasOne(d => d.Car)
+                    .WithMany(p => p.CarEvents)
+                    .HasForeignKey(d => d.CarId)
+                    .OnDelete(DeleteBehavior.ClientSetNull)
+                    .HasConstraintName("FK__CarEvents__CarId__2CF2ADDF");
+            });
+
+            modelBuilder.Entity<ClientEvents>(entity =>
+            {
+                entity.Property(e => e.EventDescription)
+                    .IsRequired()
+                    .HasMaxLength(128)
+                    .IsUnicode(false);
+
+                entity.Property(e => e.TimeOfEvent).HasColumnType("datetime");
+
+                entity.Property(e => e.TypeOfEvent)
+                    .IsRequired()
+                    .HasMaxLength(128)
+                    .IsUnicode(false);
+
+                entity.HasOne(d => d.Car)
+                    .WithMany(p => p.ClientEvents)
+                    .HasForeignKey(d => d.CarId)
+                    .OnDelete(DeleteBehavior.ClientSetNull)
+                    .HasConstraintName("FK__ClientEve__CarId__2A164134");
+
+                entity.HasOne(d => d.Client)
+                    .WithMany(p => p.ClientEvents)
+                    .HasForeignKey(d => d.ClientId)
+                    .OnDelete(DeleteBehavior.ClientSetNull)
+                    .HasConstraintName("FK__ClientEve__Clien__29221CFB");
+            });
+
             modelBuilder.Entity<Clients>(entity =>
             {
                 entity.HasIndex(e => e.ClientSsn)
@@ -95,6 +145,12 @@ namespace CarRental.Models.Entities
                     .IsRequired()
                     .HasMaxLength(64)
                     .IsUnicode(false);
+
+                entity.Property(e => e.LoyaltyLevel)
+                    .IsRequired()
+                    .HasMaxLength(12)
+                    .IsUnicode(false)
+                    .HasDefaultValueSql("('None')");
             });
 
             modelBuilder.Entity<ReturnOfRentalCar>(entity =>
