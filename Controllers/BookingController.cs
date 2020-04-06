@@ -140,6 +140,14 @@ namespace CarRental.Controllers
             return View();
         }
 
+        [Route("/booking/SSN/{id}")]
+        public IActionResult Data(string id)
+        {
+            var client = service.GetClient(id);
+
+            return Json(client);
+        }
+
         //[HttpGet]
         //[Route("/getcars")]
         //public IActionResult Getcars()
