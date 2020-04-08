@@ -1,9 +1,5 @@
 ﻿@model CarRental.Models.ViewModels.RegisterBookingVM
 
-@*@{
-    ViewData["Title"] = "Register";
-}*@
-
 <h1>Book a car</h1>
 
 <hr />
@@ -53,13 +49,6 @@
     </div>
 </div>
 
-@*<div class="container-table">
-    <div id="divAvailableCars">
-    </div>
-</div>*@
-
-
-
 
 <script>
 
@@ -98,7 +87,7 @@
                     document.getElementById("lastName").value = result.lastName;
                     $('#firstName').attr('readonly', 'true');
                     $('#lastName').attr('readonly', 'true');
-                    $("#SSNMessage").html("<p>" + "ClientSSN exists" + "</p>");
+                    $("#SSNMessage").html("<p>" + "Client details retrieved" + "</p>");
                 }
                 else if (result === null) {
                     console.log("result is null")

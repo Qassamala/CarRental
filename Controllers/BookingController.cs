@@ -140,6 +140,7 @@ namespace CarRental.Controllers
             return View();
         }
 
+        [HttpGet]
         [Route("/booking/SSN/{id}")]
         public IActionResult Data(string id)
         {
@@ -147,17 +148,5 @@ namespace CarRental.Controllers
 
             return Json(client);
         }
-
-        //[HttpGet]
-        //[Route("/getcars")]
-        //public IActionResult Getcars()
-        //{
-        //    //var availableCars = service.TryGetCars();
-
-        //    //ViewBag.AvailableCars = availableCars;
-
-        //    return View();
-        //}
-
     }
 }

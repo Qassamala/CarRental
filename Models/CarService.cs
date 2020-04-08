@@ -58,11 +58,32 @@ namespace CarRental.Models
             .ToArray();
         }
 
+        internal AvailableCars TryGetCarById(int id)
+        {
+            return context.AvailableCars.Where(c => c.Id == id).FirstOrDefault();
+        }
+
         internal bool CheckIfCarExists(AddCarVM newCar)
         {
             var car = context.AvailableCars.Any(c => c.CarLicenseNumber == newCar.CarLicenseNumber);
 
             return car ? true : false;
+        }
+
+        internal AvailableCars[] TryGetAvailableCars()
+        {
+            var availableCars = context.AvailableCars.Where(c => c.IsAvailable == true).ToArray();
+
+            if (availableCars == null)
+            {
+                AvailableCars[] cars = new AvailableCars[0];
+                return cars;
+            }
+            else
+            {
+                return availableCars;                    
+            }
+
         }
     }
 }

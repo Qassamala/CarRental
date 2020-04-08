@@ -65,7 +65,25 @@ namespace CarRental.Controllers
                 await service.TryRegisterCarAsync(newCar);
             }
 
-            return RedirectToAction(nameof(Create));
+            return RedirectToAction("Cars", "Booking");
+        }
+
+        [HttpGet]
+        [Route("/GetCar/{id}")]
+        public IActionResult GetCar(int id)
+        {
+            var car = service.TryGetCarById(id);
+
+            return Json(car);
+        }
+
+        [HttpGet]
+        [Route("/getcars")]
+        public IActionResult GetCars()
+        {
+            var availableCars = service.TryGetAvailableCars();
+
+            return Json(availableCars);
         }
     }
 }

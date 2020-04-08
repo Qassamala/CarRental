@@ -10,11 +10,11 @@ namespace CarRental.Models.ViewModels
     public class AddCarVM
     {
         [DisplayName("Type of car")]
-        [Required]
+        [Required(ErrorMessage = "Type of car is required")]
         public string CarType { get; set; }
 
         [DisplayName("Car LicenseNumber")]
-        [Required]
+        [Required(ErrorMessage = "The car licensenumber is required")]
         public string CarLicenseNumber { get; set; }
 
         [DisplayName("Current Mileage")]
